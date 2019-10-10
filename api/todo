@@ -1,0 +1,53 @@
+
+poder actualizar, agregar cosas al pedido (actualizar factura en este momento)
+  (editar pedido)
+
+1-socio crea empleado
+  se crea username
+socio:
+  fcanevali900-fcanevali
+mozos: 
+  jalberto902-jalberto
+  jperez903-jperez
+bartender:
+  equito904-equito
+  mrizzo905-mrizzo
+cocinero:
+  psalde906-psalde
+  egonzalez907-egonzalez
+cervecero:
+  aruiz908-aruiz
+  mhacha909-mhacha
+
+------------------------
+encuesta con reseña
+  -usando el alfanum
+  -/pedido/{alfanum} -> post
+    ->reseña
+  $app->get("/pedido/{alfanum}", PedidosController::class . ':GetPedidoForCliente')->add(AuthMiddleware::class . ':IsLoggedIn');
+  1 al 10: mesa, restaurante, mozo y cocinero 
+  texto hasta 66 caracteres (buena o mala)
+mesa cerrada solo socios
+tiempo restante para el pedido [HARDOCODE something]
+listado pedidos => hora inicio, hora finalizacion, importe (factura)
+web host xd
+
+-----------------
+socio puede crear empleado
+mozo puede tomar pedido y se crean los dispatches
+cada dispatch puede actualizar el estado pegandole a /pedido/id, el id es correspondiente a su rol, los estados son en secuencia
+se le pasa un tiempo estimado
+
+el mozo tambien le pega a /pedido/id y actualiza su estado segun los estados de los dispatches
+la mesa se actualiza en base al pedido gral
+
+username del cliente
+  se le pasa por json el nombre dle cliente
+  ya tiene un username, es ese, password es username al reves
+  no tiene username? se le genera
+
+alfanum:
+  right(cliente, 2).$pedido->id
+
+1) creo pedido con socio o mozo
+2) hago login con bartender/cocinero/cervecero para actualizar los pedidos independientes
