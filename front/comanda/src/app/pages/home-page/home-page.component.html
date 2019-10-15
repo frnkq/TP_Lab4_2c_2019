@@ -1,0 +1,3 @@
+<app-header [title]="Home"></app-header>
+<app-login *ngIf="!isLoggedIn"></app-login>
+<app-user-info *ngIf="isLoggedIn"></app-user-info>
