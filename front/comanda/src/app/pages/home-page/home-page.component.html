@@ -1,3 +1,3 @@
 <app-header [title]="Home"></app-header>
-<app-login *ngIf="!isLoggedIn"></app-login>
-<app-user-info *ngIf="isLoggedIn"></app-user-info>
+<app-login *ngIf="!user" (onHasLoggedIn)="CaptureUser($event)"></app-login>
+<app-user-info [user]="user" *ngIf="user" (onHasLoggedOut)="Logout($event)"></app-user-info>

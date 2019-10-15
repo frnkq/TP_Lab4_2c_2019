@@ -1,2 +1,12 @@
-<p>login works!</p>
+<form [formGroup]="loginForm">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Nombre de usuario" aria-label="Username" formControlName="username"
+            aria-describedby="basic-addon1">
+    </div>
+
+    <div class="input-group mb-3">
+        <input type="password" class="form-control" placeholder="Contraseña" aria-label="Password" formControlName="password"
+            aria-describedby="basic-addon1">
+    </div>
 <button class="btn btn-danger" (click)="Login()">Iniciar sesion</button>
+</form>

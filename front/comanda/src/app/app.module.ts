@@ -9,6 +9,8 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { HeaderComponent } from './components/ui/header/header.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LogoutButtonComponent } from './components/ui/logout-button/logout-button.component'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -17,12 +19,15 @@ import { HttpClientModule } from '@angular/common/http';
     LoginComponent,
     RegisterComponent,
     UserInfoComponent,
-    HeaderComponent
+    HeaderComponent,
+    LogoutButtonComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

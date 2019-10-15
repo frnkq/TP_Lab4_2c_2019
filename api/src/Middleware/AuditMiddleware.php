@@ -37,7 +37,9 @@ class AuditMiddleware
       {
         $aud = new Audit;
         $aud->role = "guest";
-        $aud->username = json_decode($request->getBody())->username;
+        $aud->username = " ";
+        if(!is_null($request->getParsedBody()["username"]))
+            $aud->username = $request->getParsedBody()["username"];
         $aud->accion = $request->getAttribute('route')->getName();
         $aud->URI = $_SERVER["REQUEST_URI"];
         $aud->ip = $_SERVER["REMOTE_ADDR"];

@@ -6,11 +6,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ComandaService {
-  endpoint = "http://google.com";
+  host = "http://localhost:8080/";
+  endpoints = {
+    auth: {
+      login: "auth/login"
+    }
+  }
   constructor(private http: HttpClient) { }
 
   public Login(username: string, password: string): Observable<any>
   {
-    return this.http.post(this.endpoint, {});
+    let endpoint = this.host+this.endpoints.auth.login;
+    return this.http.post(endpoint,
+       JSON.stringify({username: username, password:password}),
+       {responseType: 'text'}
+       ); 
   }
 }

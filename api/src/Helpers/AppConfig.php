@@ -8,7 +8,7 @@ class AppConfig
         'host' => 'localhost',
         'database' => 'tp_php',
         'username' => 'root',
-        'password' => '',
+        'password' => 'frnkquito',
         'charset' => 'utf8',
         'collation' => 'utf8_unicode_ci',
         'prefix' => ''
