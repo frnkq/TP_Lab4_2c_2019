@@ -1,12 +1,20 @@
 <form [formGroup]="loginForm">
     <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Nombre de usuario" aria-label="Username" formControlName="username"
+        <input type="text" 
+        [ngClass]="{'form-control': true, 'col-8': true,  'offset-2': true, 'p-3': true, 'is-invalid':error}" 
+        placeholder="Nombre de usuario" aria-label="Username" formControlName="username"
             aria-describedby="basic-addon1">
     </div>
 
     <div class="input-group mb-3">
-        <input type="password" class="form-control" placeholder="Contraseña" aria-label="Password" formControlName="password"
+        <input type="password" 
+        [ngClass]="{'form-control': true, 'col-8': true,  'offset-2': true, 'p-3': true, 'is-invalid':error}" 
+        placeholder="Contraseña" aria-label="Password" formControlName="password"
             aria-describedby="basic-addon1">
     </div>
-<button class="btn btn-danger" (click)="Login()">Iniciar sesion</button>
+    <div *ngIf="showingSpinner" class="col-md-2 offset-md-5">
+        <app-spinner [spinner]="'pizza'" class=""></app-spinner>
+    </div>
+    <p *ngIf="error" class="text-danger col-8 offset-2">{{error}}</p>
+<button class="btn btn-success col-8 offset-2 p-3 mt-2" (click)="Login()">Iniciar sesion</button>
 </form>

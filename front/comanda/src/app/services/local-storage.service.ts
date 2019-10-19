@@ -7,9 +7,9 @@ export class LocalStorageService {
 
   constructor() { }
 
-  SetToken(token: string): void
+  SetToken(bearer: string): void
   {
-    localStorage.setItem("bearer", token);
+    localStorage.setItem("bearer", bearer);
   }
 
   GetToken(): string

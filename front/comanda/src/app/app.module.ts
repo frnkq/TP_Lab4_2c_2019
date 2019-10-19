@@ -10,8 +10,16 @@ import { UserInfoComponent } from './components/user-info/user-info.component';
 import { HeaderComponent } from './components/ui/header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LogoutButtonComponent } from './components/ui/logout-button/logout-button.component'
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SpinnerComponent } from './components/ui/spinner/spinner.component'
+import { JwtModule } from '@auth0/angular-jwt';
+import { ActionsMenuComponent } from './components/actions-menu/actions-menu.component';
 
+
+export function tokenGetter()
+{
+  return localStorage.getItem("token");
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +28,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
     RegisterComponent,
     UserInfoComponent,
     HeaderComponent,
-    LogoutButtonComponent
+    LogoutButtonComponent,
+    SpinnerComponent,
+    ActionsMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +38,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        headerName: "token",
+        throwNoTokenError: true,
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

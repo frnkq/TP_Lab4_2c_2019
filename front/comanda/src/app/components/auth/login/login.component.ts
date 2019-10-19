@@ -11,12 +11,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit
 {
-  loginForm: FormGroup;
-  showingSpinner: boolean = false;
   user: any;
   @Output() onHasLoggedIn: EventEmitter<any>;
+
+  loginForm: FormGroup;
+  error: string = null;
+
+  showingSpinner: boolean = false;
+
   constructor(private comandaService: ComandaService,
-    private localStorage: LocalStorageService, private formBuilder: FormBuilder)
+    private localStorage: LocalStorageService, private formBuilder: FormBuilder,
+    private jwtHelper: JwtHelperService)
   {
     this.onHasLoggedIn = new EventEmitter<any>();
     this.loginForm = this.formBuilder.group({
@@ -38,36 +43,49 @@ export class LoginComponent implements OnInit
   Login()
   {
     let controls = this.loginForm.controls;
+    this.error = null;
     if (this.loginForm.valid)
     {
+      this.showingSpinner = true;
       let username = controls.username.value, password = controls.password.value;
-      let bearer;
+      let bearer = null;
       let that = this;
       this.comandaService.Login(username, password).subscribe({
-        next: function (response) { that.showingSpinner = true; bearer = response; },
-        complete: function () { that.showingSpinner = false; that.SaveBearerAndRetrieveUser(bearer) },
+        next: function (response) {
+           that.showingSpinner = true; 
+           bearer = response;
+        },
+        complete: function () {
+           that.showingSpinner = false;
+           try
+           {
+            that.jwtHelper.decodeToken(bearer);
+            that.SaveBearerAndRetrieveUser(bearer);
+           }
+           catch(error)
+           {
+             that.error = bearer;
+           }
+        },
         error: function (error) { console.error(error) }
       });
     }
-    // let username, password;
-    // let bearer;
-    // let that = this;
-    // this.comandaService.Login(username, password).subscribe({
-    //   next: function (response) { that.showingSpinner = true; bearer = response; },
-    //   complete: function () { that.showingSpinner = false; that.SaveBearerAndRetrieveUser(bearer) },
-    //   error: function (error) { console.error(error) }
-    // });
+    else
+    {
+      this.error = "Por favor llena todos los campos";
+    }
   }
 
   SaveBearerAndRetrieveUser(token: string)
   {
     console.log(token);
-    let jwtHelper = new JwtHelperService();
-    if (!jwtHelper.isTokenExpired(token))
+    //let jwtHelper = new JwtHelperService();
+    console.log(this.jwtHelper.tokenGetter());
+    if (!this.jwtHelper.isTokenExpired(token))
     {
       this.localStorage.SetToken(token);
-      console.log("decoding token", jwtHelper.decodeToken(token));
-      this.user = jwtHelper.decodeToken(token).data;
+      console.log("decoding token", this.jwtHelper.decodeToken(token));
+      this.user = this.jwtHelper.decodeToken(token).data;
       this.onHasLoggedIn.emit(this.user);
     }
   }
