@@ -3,6 +3,7 @@ import { ComandaService } from 'src/app/services/comanda.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit
 
   constructor(private comandaService: ComandaService,
     private localStorage: LocalStorageService, private formBuilder: FormBuilder,
-    private jwtHelper: JwtHelperService)
+    private jwtHelper: JwtHelperService,
+    private router: Router)
   {
     this.onHasLoggedIn = new EventEmitter<any>();
     this.loginForm = this.formBuilder.group({
@@ -88,5 +90,6 @@ export class LoginComponent implements OnInit
       this.user = this.jwtHelper.decodeToken(token).data;
       this.onHasLoggedIn.emit(this.user);
     }
+    this.router.navigate(['/']);
   }
 }

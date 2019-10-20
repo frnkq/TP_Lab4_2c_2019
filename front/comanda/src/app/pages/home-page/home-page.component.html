@@ -1,6 +1,7 @@
 <app-header [title]="Home"></app-header>
 <app-login *ngIf="!user" (onHasLoggedIn)="CaptureUser($event)"></app-login>
 <app-user-info [user]="user" *ngIf="user" (onHasLoggedOut)="Logout($event)"></app-user-info>
-<div class="col-3 border">
+<div class="col-3 border" *ngIf="user">
     <app-actions-menu [role]="user.role"></app-actions-menu>
 </div>
+<router-outlet></router-outlet>

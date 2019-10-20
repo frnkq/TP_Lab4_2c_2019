@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SpinnerComponent } from './components/ui/spinner/spinner.component'
 import { JwtModule } from '@auth0/angular-jwt';
 import { ActionsMenuComponent } from './components/actions-menu/actions-menu.component';
+import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 
 
 export function tokenGetter()
@@ -30,7 +31,8 @@ export function tokenGetter()
     HeaderComponent,
     LogoutButtonComponent,
     SpinnerComponent,
-    ActionsMenuComponent
+    ActionsMenuComponent,
+    AuthPageComponent
   ],
   imports: [
     BrowserModule,
