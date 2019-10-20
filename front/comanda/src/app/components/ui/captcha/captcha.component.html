@@ -1,0 +1,15 @@
+<div *ngIf="customCaptcha">
+    custom
+</div>
+<div *ngIf="!customCaptcha">
+    google
+</div>
+
+<!-- Input HTML text is inside the DIV -->
+<div id="captchaText" style="position: relative;">
+    {{nA}} {{operator}} {{nB}}
+</div>
+
+  <img id="captcha" src="">
+
+<button class="btn btn-warning" (click)="Render()">Render</button>

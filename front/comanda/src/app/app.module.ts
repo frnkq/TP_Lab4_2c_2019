@@ -15,6 +15,7 @@ import { SpinnerComponent } from './components/ui/spinner/spinner.component'
 import { JwtModule } from '@auth0/angular-jwt';
 import { ActionsMenuComponent } from './components/actions-menu/actions-menu.component';
 import { AuthPageComponent } from './pages/auth-page/auth-page.component';
+import { CaptchaComponent } from './components/ui/captcha/captcha.component';
 
 
 export function tokenGetter()
@@ -32,7 +33,8 @@ export function tokenGetter()
     LogoutButtonComponent,
     SpinnerComponent,
     ActionsMenuComponent,
-    AuthPageComponent
+    AuthPageComponent,
+    CaptchaComponent,
   ],
   imports: [
     BrowserModule,
