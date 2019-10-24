@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { createContext } from 'vm';
-import { CompileShallowModuleMetadata } from '@angular/compiler';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-captcha',
@@ -18,14 +16,17 @@ export class CaptchaComponent implements OnInit {
   result: number = null;
 
   //captcha settings
-  reverse: boolean = null;
+  reverse: boolean = true;
   withNoise: boolean = true;
 
+  userGuess: string;
+  tries: number = 0;
+  captchaDisabled: boolean = false;
+  solved: boolean = false;
+
+  onCorrectCaptcha: EventEmitter<any> = new EventEmitter<any>();
   constructor() {
     this.GenerateCaptcha();
-
-    this.result = this.Resolve(this.operator, this.nA, this.nB, this.reverse);
-    console.log(this.result);
   }
 
   ngOnInit() {
@@ -34,8 +35,10 @@ export class CaptchaComponent implements OnInit {
 
   GenerateCaptcha() {
     this.GenerateRandomNumbers();
-    this.BiggerNumberFirst();
     this.GetOperator();
+    this.result = this.Resolve(this.operator, this.nA, this.nB, this.reverse);
+    console.log(this.result);
+    this.BiggerNumberFirst();
   }
 
   NewCaptcha()
@@ -44,10 +47,45 @@ export class CaptchaComponent implements OnInit {
     this.Render();
   }
 
+  CheckUserGuess()
+  {
+    if(this.tries == 3) this.DisableCaptcha(true);
+    this.tries++;
+    if(this.userGuess && Number.parseInt(this.userGuess) == this.result)
+    {
+      this.onCorrectCaptcha.emit();
+      let captcha = document.getElementById('image');
+      captcha.style.border = "3px solid lightgreen";
+      this.solved = true;
+    }
+    else
+    {
+      let captcha = document.getElementById('image');
+      captcha.style.border = "3px solid red";
+        this.userGuess = null;
+      this.DisableCaptcha();
+    }
+  }
 
+  DisableCaptcha(longer?:boolean)
+  {
+    let timeLeft = longer? 10 : 3;
+    this.captchaDisabled = true;
+
+    let interval = setInterval(()=>{
+      timeLeft--;
+      console.log("disabling", timeLeft, longer);
+      if(timeLeft <= 0)
+      {
+        this.captchaDisabled = false;
+        document.getElementById('image').style.border= "1px solid black";
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
   /**Arithmetics  */
 
-  Resolve(operator: string, nA: number, nB: number, reverse?): int {
+  Resolve(operator: string, nA: number, nB: number, reverse?): number {
     switch (operator) {
       case "+":
         return reverse ? nA - nB : nA + nB;;
@@ -80,7 +118,7 @@ export class CaptchaComponent implements OnInit {
 
   Render() {
     let canvas = document.getElementById('textCanvas');
-    let tCtx = document.getElementById('textCanvas').getContext('2d');
+    let tCtx = (document.getElementById('textCanvas') as any).getContext('2d');
     this.ClearCanvas(tCtx, canvas);
     this.DrawTextInCanvas(canvas, tCtx);
     if(this.withNoise) this.DrawNoiseOnCanvas(tCtx, canvas);
@@ -88,7 +126,7 @@ export class CaptchaComponent implements OnInit {
   }
 
   CanvasToImage(tCtx) {
-    let imageElem = document.getElementById('image');
+    let imageElem = (document.getElementById('image') as any);
     imageElem.src = tCtx.canvas.toDataURL();
     imageElem.style = "border:2px solid black;height:120px;width:120px;";
   }
