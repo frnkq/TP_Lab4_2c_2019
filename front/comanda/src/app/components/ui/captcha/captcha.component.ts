@@ -21,6 +21,7 @@ export class CaptchaComponent implements OnInit {
 
   userGuess: string;
   tries: number = 0;
+  disabledTimeLeft: number = 0;
   captchaDisabled: boolean = false;
   solved: boolean = false;
 
@@ -33,56 +34,6 @@ export class CaptchaComponent implements OnInit {
     this.Render();
   }
 
-  GenerateCaptcha() {
-    this.GenerateRandomNumbers();
-    this.GetOperator();
-    this.result = this.Resolve(this.operator, this.nA, this.nB, this.reverse);
-    console.log(this.result);
-    this.BiggerNumberFirst();
-  }
-
-  NewCaptcha()
-  {
-    this.GenerateCaptcha();
-    this.Render();
-  }
-
-  CheckUserGuess()
-  {
-    if(this.tries == 3) this.DisableCaptcha(true);
-    this.tries++;
-    if(this.userGuess && Number.parseInt(this.userGuess) == this.result)
-    {
-      this.onCorrectCaptcha.emit();
-      let captcha = document.getElementById('image');
-      captcha.style.border = "3px solid lightgreen";
-      this.solved = true;
-    }
-    else
-    {
-      let captcha = document.getElementById('image');
-      captcha.style.border = "3px solid red";
-        this.userGuess = null;
-      this.DisableCaptcha();
-    }
-  }
-
-  DisableCaptcha(longer?:boolean)
-  {
-    let timeLeft = longer? 10 : 3;
-    this.captchaDisabled = true;
-
-    let interval = setInterval(()=>{
-      timeLeft--;
-      console.log("disabling", timeLeft, longer);
-      if(timeLeft <= 0)
-      {
-        this.captchaDisabled = false;
-        document.getElementById('image').style.border= "1px solid black";
-        clearInterval(interval);
-      }
-    }, 1000);
-  }
   /**Arithmetics  */
 
   Resolve(operator: string, nA: number, nB: number, reverse?): number {
@@ -116,6 +67,15 @@ export class CaptchaComponent implements OnInit {
   }
   /**Canvas */
 
+  GenerateCaptcha() {
+    this.GenerateRandomNumbers();
+    this.GetOperator();
+    this.result = this.Resolve(this.operator, this.nA, this.nB, this.reverse);
+    console.log(this.result);
+    this.BiggerNumberFirst();
+  }
+
+
   Render() {
     let canvas = document.getElementById('textCanvas');
     let tCtx = (document.getElementById('textCanvas') as any).getContext('2d');
@@ -123,6 +83,12 @@ export class CaptchaComponent implements OnInit {
     this.DrawTextInCanvas(canvas, tCtx);
     if(this.withNoise) this.DrawNoiseOnCanvas(tCtx, canvas);
     this.CanvasToImage(tCtx);
+  }
+
+  NewCaptcha()
+  {
+    this.GenerateCaptcha();
+    this.Render();
   }
 
   CanvasToImage(tCtx) {
@@ -150,6 +116,65 @@ export class CaptchaComponent implements OnInit {
       }
     }
   }
+
+  CheckUserGuess()
+  {
+    this.tries++;
+
+    if(this.userGuess && Number.parseInt(this.userGuess) == this.result)
+    {
+      this.onCorrectCaptcha.emit();
+      let captcha = document.getElementById('image');
+      captcha.style.border = "3px solid lightgreen";
+      this.solved = true;
+    }
+    else
+    {
+        this.userGuess = null;
+
+        let multiplyTimeBy = null;
+        if(this.tries >= 3)
+          multiplyTimeBy = 2;
+
+        this.DisableInput(3, this.DisableCaptcha, this.ReenableCaptcha, multiplyTimeBy);
+    }
+  }
+  ReenableCaptcha()
+  {
+        this.captchaDisabled = false;
+        console.log("reenabling....");
+        document.getElementById('image').style.border= "1px solid black";
+
+  }
+  DisableCaptcha()
+  {
+      let captcha = document.getElementById('image');
+      captcha.style.border = "3px solid red";
+      this.NewCaptcha();
+  }
+  DisableInput(time: number, onDisabled:()=>void, onReenabled:()=>void, multiplyTimeBy?:number)
+  {
+    this.disabledTimeLeft = multiplyTimeBy? time * multiplyTimeBy : time;
+    console.log("before", this.disabledTimeLeft);
+    if(multiplyTimeBy)
+      console.log("multiplying time", this.disabledTimeLeft); 
+
+    this.captchaDisabled = true;
+    onDisabled.bind(this/*el*/)();
+    console.log("after disablign", this.disabledTimeLeft);
+
+    let interval = setInterval(()=>{
+      this.disabledTimeLeft--;
+      if(this.disabledTimeLeft <= 0)
+      {
+        onReenabled.bind(this/*el*/)();
+        this.disabledTimeLeft = 0;
+        clearInterval(interval);
+      }
+      console.log("inside interval", this.disabledTimeLeft);
+    }, 1000);
+  }
+
 
   ClearCanvas(tCtx, canvas)
   {

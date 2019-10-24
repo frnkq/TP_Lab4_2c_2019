@@ -1,13 +1,14 @@
 <div class="captcha" class="border col-4 p-0">
     <canvas id="textCanvas" style="display:none;" width="120px" height="120px"></canvas>
     <div class="row">
-        <div class="col-3 m-0 p-0">
+        <div class="col-3 m-0 p-0 mr-2">
             <img id="image" />
         </div>
         <div class="col-3 offset-1 m-0 ml-5 p-0">
             <input type="number" class="mt-3" style="font-size: 2em;width:80px;padding:0.3px;" name="userGuess"
-                [(ngModel)]="userGuess" [disabled]="(!userGuess && captchaDisabled) || solved"/>
-            <button class="btn btn-primary mt-1" (click)="CheckUserGuess()">Verificar</button>
+                [(ngModel)]="userGuess" [disabled]="(!userGuess && captchaDisabled) || solved"
+                [placeholder]="disabledTimeLeft"/>
+            <button class="btn btn-primary mt-1" (click)="CheckUserGuess()" [disabled]="(!userGuess && captchaDisabled) || solved">Verificar</button>
         </div>
     </div>
     <img style="background-color:white; position:relative; top:-28px;left: 80px;"
