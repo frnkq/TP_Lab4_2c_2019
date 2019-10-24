@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-captcha',
@@ -25,7 +25,7 @@ export class CaptchaComponent implements OnInit {
   captchaDisabled: boolean = false;
   solved: boolean = false;
 
-  onCorrectCaptcha: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onCorrectCaptcha: EventEmitter<any> = new EventEmitter<any>();
   constructor() {
     this.GenerateCaptcha();
   }

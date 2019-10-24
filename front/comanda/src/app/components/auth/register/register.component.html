@@ -16,5 +16,9 @@
         <app-spinner [spinner]="'pizza'" class=""></app-spinner>
     </div>
     <p *ngIf="error" class="text-danger col-8 offset-2">{{error}}</p>
+    <div class="col-1 offset-3">
+    <app-captcha (onCorrectCaptcha)="ValidCaptcha()"></app-captcha>
+
+    </div>
 <button class="btn btn-success col-8 offset-2 p-3 mt-2" (click)="Register()">Registrarme</button>
 </form>

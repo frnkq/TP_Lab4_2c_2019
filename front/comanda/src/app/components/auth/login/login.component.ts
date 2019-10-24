@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit
   error: string = null;
 
   showingSpinner: boolean = false;
+  validCaptcha:boolean = false;
 
   constructor(private comandaService: ComandaService,
     private localStorage: LocalStorageService, private formBuilder: FormBuilder,
@@ -46,7 +47,7 @@ export class LoginComponent implements OnInit
   {
     let controls = this.loginForm.controls;
     this.error = null;
-    if (this.loginForm.valid)
+    if (this.loginForm.valid && this.validCaptcha == true)
     {
       this.showingSpinner = true;
       let username = controls.username.value, password = controls.password.value;
@@ -74,8 +75,20 @@ export class LoginComponent implements OnInit
     }
     else
     {
-      this.error = "Por favor llena todos los campos";
+      if(!this.validCaptcha)
+      {
+        this.error = "Verifica el captcha";
+      }
+      else
+      {
+        this.error = "Por favor llena todos los campos";
+      }
     }
+  }
+
+  ValidCaptcha()
+  {
+    this.validCaptcha = true;
   }
 
   SaveBearerAndRetrieveUser(token: string)

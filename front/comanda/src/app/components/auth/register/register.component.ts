@@ -16,6 +16,7 @@ export class RegisterComponent implements OnInit {
   error: string = null;
   showingSpinner: boolean = false;
   onHasRegistered: EventEmitter<any>;
+  validCaptcha: boolean = false;
   constructor(private formBuilder: FormBuilder, 
     private localStorage: LocalStorageService,
     private comandaService: ComandaService, 
@@ -42,7 +43,7 @@ export class RegisterComponent implements OnInit {
 
     let controls = this.registerForm.controls;
     this.error = null;
-    if (this.registerForm.valid)
+    if (this.registerForm.valid && this.validCaptcha)
     {
       this.showingSpinner = true;
       let username = controls.username.value, password = controls.password.value;
@@ -70,7 +71,14 @@ export class RegisterComponent implements OnInit {
     }
     else
     {
-      this.error = "Por favor llena todos los campos";
+      if(!this.validCaptcha)
+      {
+        this.error = "Valida el captcha";
+      }
+      else
+      {
+        this.error = "Por favor llena todos los campos";
+      }
     }
   }
 
@@ -88,4 +96,10 @@ export class RegisterComponent implements OnInit {
     }
     this.router.navigate(['/']);
   }
+
+  ValidCaptcha()
+  {
+    this.validCaptcha = true;
+  }
+
 }
