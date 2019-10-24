@@ -1,15 +1,14 @@
-<div *ngIf="customCaptcha">
-    custom
-</div>
-<div *ngIf="!customCaptcha">
-    google
-</div>
+        <canvas id="textCanvas" style="display:none;" width="120px" height="120px"></canvas>
+        <div class="row">
 
-<!-- Input HTML text is inside the DIV -->
-<div id="captchaText" style="position: relative;">
-    {{nA}} {{operator}} {{nB}}
-</div>
+            <div class="col-1 m-0 p-0">
 
-  <img id="captcha" src="">
-
-<button class="btn btn-warning" (click)="Render()">Render</button>
+        <img id="image" />
+            </div>
+            <div class="col-1 m-0 ml-5 h-5 p-0">
+                <input type="number" style="font-size: 3em;width:80px"/>
+            </div>
+        </div>
+        <p class="p-1 bg-primary text-white col-2 m-0" style="top:-32px;font-weight:bold;" (click)="NewCaptcha()">Nuevo
+        </p>
+        <small style="position:relative;top:-32px">Los operadores estan invertidos</small>
