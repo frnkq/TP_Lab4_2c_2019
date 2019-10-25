@@ -1,0 +1,6 @@
+<app-header [title]="Empleados"></app-header>
+<p *ngIf="showingSpinner">spinner</p>
+<div *ngIf="empleados">
+    <app-empleados-listado [empleados]="empleados"></app-empleados-listado>
+</div>
+<!-- <app-empleados-listado [empleados]="empleados"></app-empleados-listado> -->

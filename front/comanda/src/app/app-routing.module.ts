@@ -4,6 +4,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { AuthPageComponent } from './pages/auth-page/auth-page.component';
+import { EmpleadosPageComponent } from './pages/empleados-page/empleados-page.component';
 
 
 const routes: Routes = [
@@ -11,7 +12,9 @@ const routes: Routes = [
   {path: 'auth', component: AuthPageComponent, children: [
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent}
-  ]}
+  ]},
+  {path: 'empleados', component: EmpleadosPageComponent}
+
 ];
 
 @NgModule({

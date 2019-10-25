@@ -11,6 +11,9 @@ export class ComandaService {
     auth: {
       login: "auth/login",
       register: "auth/register"
+    },
+    admin: {
+      getEmployees: "admin/empleados/"
     }
   }
   constructor(private http: HttpClient) { }
@@ -31,7 +34,7 @@ export class ComandaService {
 
   public Register(username: string, password: string): Observable<any> {
     let endpoint = this.host + this.endpoints.auth.register;
-    console.log("higting: ", endpoint);
+    console.log("hitting: ", endpoint);
     let header = new HttpHeaders();
     header.set("Access-Control-Allow-Origin", "*");
 
@@ -41,6 +44,22 @@ export class ComandaService {
       {
         responseType: 'text',
         headers: header
+      }
+    );
+  }
+
+  public GetEmpleados(token: string)
+  {
+    let endpoint = this.host + this.endpoints.admin.getEmployees; 
+    let header = new HttpHeaders();
+    header = header.set("Access-Control-Allow-Origin", "*");
+    header = header.append("token", token);
+    console.log(this.http.get(endpoint, {headers: header}));
+    return this.http.get(
+      endpoint,
+      {
+        headers: header,
+        responseType: "json"
       }
     );
   }

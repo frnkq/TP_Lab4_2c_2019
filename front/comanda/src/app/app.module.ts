@@ -16,11 +16,13 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { ActionsMenuComponent } from './components/actions-menu/actions-menu.component';
 import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { CaptchaComponent } from './components/ui/captcha/captcha.component';
+import { EmpleadosPageComponent } from './pages/empleados-page/empleados-page.component';
+import { EmpleadosListadoComponent } from './components/empleados-listado/empleados-listado.component';
 
 
 export function tokenGetter()
 {
-  return localStorage.getItem("token");
+  return localStorage.getItem("bearer");
 }
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ export function tokenGetter()
     ActionsMenuComponent,
     AuthPageComponent,
     CaptchaComponent,
+    EmpleadosPageComponent,
+    EmpleadosListadoComponent,
   ],
   imports: [
     BrowserModule,
