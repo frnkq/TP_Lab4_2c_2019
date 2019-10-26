@@ -29,7 +29,14 @@ export class EmpleadosListadoComponent implements OnInit {
 
   SortBy(parameter) {
 
-    let filters = {};
+    let filters = {
+      id: false,
+      username:false,
+      role: false,
+      nombre: false,
+      apellido: false,
+      dni: false
+    };
     if (sessionStorage.getItem("filters"))
       filters = JSON.parse(sessionStorage.getItem("filters"));
 

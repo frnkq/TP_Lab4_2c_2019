@@ -16,7 +16,10 @@ export class ComandaService {
       getEmployees: "admin/empleados/",
       suspendEmployee: "admin/empleados/suspender",
       unSuspendemployee: "admin/empleados/dessuspender",
-    }
+      lists: {
+        kitchenLists: "listados/cocina"
+      }
+    },
   }
   constructor(private http: HttpClient) { }
   /**AUTH */
@@ -51,9 +54,8 @@ export class ComandaService {
   }
 
   /**EMPLOYEES */
-  public GetEmpleados(token: string)
-  {
-    let endpoint = this.host + this.endpoints.admin.getEmployees; 
+  public GetEmpleados(token: string) {
+    let endpoint = this.host + this.endpoints.admin.getEmployees;
     let header = new HttpHeaders();
     header = header.set("Access-Control-Allow-Origin", "*");
     header = header.append("token", token);
@@ -66,8 +68,7 @@ export class ComandaService {
     );
   }
 
-  public SuspendEmployee(token: string, employeeId: string)
-  {
+  public SuspendEmployee(token: string, employeeId: string) {
     let endpoint = this.host + this.endpoints.admin.suspendEmployee;
     let header = new HttpHeaders();
     header = header.set("Access-Control-Allow-Origin", "*");
@@ -84,8 +85,7 @@ export class ComandaService {
     );
   }
 
-  public UnsuspendEmployee(token: string, employeeId: string)
-  {
+  public UnsuspendEmployee(token: string, employeeId: string) {
     let endpoint = this.host + this.endpoints.admin.unSuspendemployee;
     let header = new HttpHeaders();
     header = header.set("Access-Control-Allow-Origin", "*");
@@ -100,5 +100,21 @@ export class ComandaService {
         responseType: "json"
       }
     );
+  }
+
+  /* LISTADOS */
+  public ListKitchenOperations(token: string) {
+    let endpoint = this.host + this.endpoints.admin.lists.kitchenLists;
+    let header = new HttpHeaders();
+    header = header.set("Access-Control-Allow-Origin", "*");
+    header = header.append("token", token);
+    return this.http.get(
+      endpoint,
+      {
+        headers: header,
+        responseType: "json"
+      }
+    );
+
   }
 }

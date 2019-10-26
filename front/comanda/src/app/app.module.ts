@@ -21,7 +21,6 @@ import { EmpleadosListadoComponent } from './components/empleados-listado/emplea
 
 import { TableModule } from 'primeng/table';
 import { ReportesPageComponent } from './pages/reportes-page/reportes-page.component';
-
 export function tokenGetter()
 {
   return localStorage.getItem("bearer");

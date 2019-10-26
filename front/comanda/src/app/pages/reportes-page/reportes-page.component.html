@@ -1,1 +1,21 @@
-<p>reportes-page works!</p>
+<button class="btn btn-primary" (click)="Run()">Run()</button>
+<button class="btn btn-primary" (click)="Pdf()">PDF</button>
+
+<p-table id="tabla" [value]="operations">
+    <ng-template pTemplate="header">
+        <tr>
+            <th *ngFor="let col of cols">
+                <a (click)="SortBy(col.field)">{{col.header}}</a>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-operation>
+        <tr>
+            <td *ngFor="let col of cols">
+                    {{operation[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<div id="texto">hola</div>
