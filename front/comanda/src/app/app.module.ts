@@ -19,6 +19,8 @@ import { CaptchaComponent } from './components/ui/captcha/captcha.component';
 import { EmpleadosPageComponent } from './pages/empleados-page/empleados-page.component';
 import { EmpleadosListadoComponent } from './components/empleados-listado/empleados-listado.component';
 
+import { TableModule } from 'primeng/table';
+import { ReportesPageComponent } from './pages/reportes-page/reportes-page.component';
 
 export function tokenGetter()
 {
@@ -39,12 +41,14 @@ export function tokenGetter()
     CaptchaComponent,
     EmpleadosPageComponent,
     EmpleadosListadoComponent,
+    ReportesPageComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    TableModule,
     ReactiveFormsModule,
     JwtModule.forRoot({
       config: {

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12">
-        <button *ngIf="canManageEmployees" class="col-12 btn btn-danger" [routerLink]="['/empleados']">
+        <button *ngIf="canManageEmployees" class="col-12 btn btn-danger" [routerLink]="['/admin/empleados']">
             Empleados
         </button>
     </div>
@@ -11,10 +11,9 @@
         </button>
     </div>
     <div class="col-12">
-        <button *ngIf="canViewPedidos"
+        <button *ngIf="canManageEmployees" [routerLink]="['/admin/reportes']"
             class="col-12 btn btn-success">
-            No idea
+            Reportes
         </button>
     </div>
-
 </div>
