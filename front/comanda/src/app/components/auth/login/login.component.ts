@@ -105,4 +105,10 @@ export class LoginComponent implements OnInit
     }
     this.router.navigate(['/']);
   }
+
+  SelectUser($event)
+  {
+    this.loginForm.controls.username.setValue($event.username);
+    this.loginForm.controls.password.setValue($event.password);
+  }
 }

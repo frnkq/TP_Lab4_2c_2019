@@ -2,7 +2,7 @@ import { Component, OnInit, Output } from '@angular/core';
 import { ComandaService } from 'src/app/services/comanda.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
-
+import {environment} from '../../../environments/environment';
 @Component({
   selector: 'app-empleados-page',
   templateUrl: './empleados-page.component.html',
@@ -17,8 +17,10 @@ export class EmpleadosPageComponent implements OnInit {
     private localStorage: LocalStorageService) { }
 
   ngOnInit() {
-    //this.GetAllEmployees();
-    this.GetAllEmployeesOffline();
+    if(environment.production)
+      this.GetAllEmployees();
+    else
+      this.GetAllEmployeesOffline();
   }
 
   GetAllEmployees()
@@ -31,7 +33,26 @@ export class EmpleadosPageComponent implements OnInit {
       complete: ()=>{this.showingSpinner = false}
     });
 
+  }
+  
+  Pdf() {
+    var data = document.getElementById('tablaEmpleados');
+    this.showingSpinner = true;
+    html2canvas(data).then(canvas => {
+      // Few necessary setting options  
+      var imgWidth = 208;
+      var pageHeight = 295;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+      var heightLeft = imgHeight;
 
+      const contentDataURL = canvas.toDataURL('image/png')  ;
+      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+      //let pdf = new jsPDF(); // A4 size page of PDF  
+      var position = 0;  
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+      pdf.save('Empleados.pdf'); // Generated PDF   
+      this.showingSpinner = false;
+    });
   }
   GetAllEmployeesOffline()
   {

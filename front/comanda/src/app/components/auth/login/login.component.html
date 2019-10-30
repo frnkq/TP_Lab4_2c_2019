@@ -17,5 +17,6 @@
     </div>
     <p *ngIf="error" class="text-danger col-8 offset-2">{{error}}</p>
     <app-captcha (onCorrectCaptcha)="ValidCaptcha()" class="offset-4"></app-captcha>
+    <app-quicklogin (onSelectedUser)="SelectUser($event)"></app-quicklogin>
 <button class="btn btn-success col-8 offset-2 p-3 mt-2" (click)="Login()">Iniciar sesion</button>
 </form>

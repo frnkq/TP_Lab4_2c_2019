@@ -3,6 +3,7 @@ import { ComandaService } from 'src/app/services/comanda.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { Observable, Observer } from 'rxjs';
 
 @Component({
   selector: 'app-reportes-page',
@@ -13,7 +14,10 @@ export class ReportesPageComponent implements OnInit {
   message: string = "";
   operations: any = [];
   cols: any[];
-  constructor(private comandaService: ComandaService, private jwtHelper: JwtHelperService) { }
+  report: string;
+  constructor(private comandaService: ComandaService, private jwtHelper: JwtHelperService) {
+    this.report = "kitchen";
+   }
 
   ngOnInit() {
     this.cols = [
@@ -22,18 +26,19 @@ export class ReportesPageComponent implements OnInit {
       { field: 'role', header: "Rol" },
       { field: 'accion', header: "Accion" },
       { field: 'uri', header: "URI" }
-    ]
+    ];
 
+    this.Run();
   }
 
   Run() {
     let that = this;
-    this.comandaService.ListKitchenOperations(this.jwtHelper.tokenGetter()).subscribe({
-      next: function (response) { that.message = "getting..."; that.operations = response; console.log(response); }
-
-    })
+    this.comandaService.ListOperations(this.jwtHelper.tokenGetter(), this.report).subscribe({
+      next: function (response) { that.operations = response;},
+      error: (err)=>{console.error(err);}
+    });
   }
-
+  
   Pdf() {
     var data = document.getElementById('tabla');
 

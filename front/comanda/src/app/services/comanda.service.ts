@@ -17,7 +17,7 @@ export class ComandaService {
       suspendEmployee: "admin/empleados/suspender",
       unSuspendemployee: "admin/empleados/dessuspender",
       lists: {
-        kitchenLists: "listados/cocina"
+        kitchen: "listados/cocina",
       }
     },
   }
@@ -103,8 +103,19 @@ export class ComandaService {
   }
 
   /* LISTADOS */
-  public ListKitchenOperations(token: string) {
-    let endpoint = this.host + this.endpoints.admin.lists.kitchenLists;
+  public ListOperations(token: string, list: string, employee? :string)
+  {
+    switch(list)
+    {
+      case "kitchen":
+        return this.ListKitchenOperations(token, employee);
+      
+    }
+  }
+
+  public ListKitchenOperations(token: string, employee?: string) {
+    let endpoint = this.host + this.endpoints.admin.lists.kitchen;
+    endpoint = employee ? endpoint+"/"+employee : endpoint;
     let header = new HttpHeaders();
     header = header.set("Access-Control-Allow-Origin", "*");
     header = header.append("token", token);
