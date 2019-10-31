@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class ComandaService {
       }
     },
   }
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private jwtHelperService: JwtHelperService) { }
   /**AUTH */
   public Login(username: string, password: string): Observable<any> {
     let endpoint = this.host + this.endpoints.auth.login;
@@ -54,7 +55,8 @@ export class ComandaService {
   }
 
   /**EMPLOYEES */
-  public GetEmpleados(token: string) {
+  public GetEmpleados() {
+    let token = this.jwtHelperService.tokenGetter();
     let endpoint = this.host + this.endpoints.admin.getEmployees;
     let header = new HttpHeaders();
     header = header.set("Access-Control-Allow-Origin", "*");
@@ -103,17 +105,19 @@ export class ComandaService {
   }
 
   /* LISTADOS */
-  public ListOperations(token: string, list: string, employee? :string)
+  public ListOperations(list?: string, employee? :string)
   {
+    console.log("listing ", {list: list, employee: employee});
+    let token = this.jwtHelperService.tokenGetter();
     switch(list)
     {
+      case "default":
       case "kitchen":
         return this.ListKitchenOperations(token, employee);
       
     }
   }
-
-  public ListKitchenOperations(token: string, employee?: string) {
+  private ListKitchenOperations(token: string, employee?: string) {
     let endpoint = this.host + this.endpoints.admin.lists.kitchen;
     endpoint = employee ? endpoint+"/"+employee : endpoint;
     let header = new HttpHeaders();
@@ -126,6 +130,10 @@ export class ComandaService {
         responseType: "json"
       }
     );
+  }
+
+  private ListBeerOperations(token: string, employee?: string)
+  {
 
   }
 }

@@ -1,0 +1,29 @@
+<button class="btn btn-primary" (click)="PrintTable()">Imprimir</button>
+Operaciones:
+<select name="operationsType" id="operationsType" [ngModel]="operationsFilter" (ngModelChange)="onReportSelectChange($event)">
+    <option *ngFor="let report of reports" value="{{report}}">
+        {{report}}
+    </option>
+</select>
+Empleados:
+<select name="operationsType" [ngModel]="empleadosFilter" (ngModelChange)="onEmpleadosSelectChange($event)" id="employees">
+    <option *ngFor="let empleado of empleados" [ngValue]="empleado">
+        {{empleado.username}}
+    </option>
+</select>
+<p-table id="tabla" [value]="operations">
+    <ng-template pTemplate="header">
+        <tr>
+            <th *ngFor="let col of cols">
+                <a (click)="SortBy(col.field)">{{col.header}}</a>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-operation>
+        <tr>
+            <td *ngFor="let col of cols">
+                    {{operation[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

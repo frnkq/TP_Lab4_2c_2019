@@ -22,6 +22,7 @@ import { EmpleadosListadoComponent } from './components/empleados-listado/emplea
 import { TableModule } from 'primeng/table';
 import { ReportesPageComponent } from './pages/reportes-page/reportes-page.component';
 import { QuickloginComponent } from './components/ui/quicklogin/quicklogin.component';
+import { OperacionesListadoComponent } from './components/operaciones-listado/operaciones-listado.component';
 export function tokenGetter()
 {
   return localStorage.getItem("bearer");
@@ -43,6 +44,7 @@ export function tokenGetter()
     EmpleadosListadoComponent,
     ReportesPageComponent,
     QuickloginComponent,
+    OperacionesListadoComponent,
   ],
   imports: [
     BrowserModule,
