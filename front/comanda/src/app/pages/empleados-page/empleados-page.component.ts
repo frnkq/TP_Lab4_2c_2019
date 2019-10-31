@@ -22,10 +22,12 @@ export class EmpleadosPageComponent implements OnInit
 
   ngOnInit()
   {
-    if (environment.production)
-      this.GetAllEmployees();
-    else
-      this.GetAllEmployeesOffline();
+    // if (environment.production)
+    //   this.GetAllEmployees();
+    // else
+    //   this.GetAllEmployeesOffline();
+
+    this.GetAllEmployees();
   }
 
   GetAllEmployees()

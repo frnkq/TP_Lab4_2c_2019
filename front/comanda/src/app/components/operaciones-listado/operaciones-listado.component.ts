@@ -12,6 +12,8 @@ import jsPDF from 'jspdf';
 export class OperacionesListadoComponent implements OnInit, OnChanges
 {
 
+  selected = false;
+  showingSpinner = false;
   message: string = "";
   cols: any[];
   report: string;
@@ -44,17 +46,11 @@ export class OperacionesListadoComponent implements OnInit, OnChanges
       { field: 'accion', header: "Accion" },
       { field: 'uri', header: "URI" }
     ];
-
-    this.Run();
-  }
-
-  Run()
-  {
-    this.ListAllOperations();
   }
 
   onEmpleadosSelectChange($event /*option.value = employee*/)
   {
+    this.selected = true;
     this.employee = $event.username;
     //match operation for employee
     switch($event.role)
@@ -79,15 +75,12 @@ export class OperacionesListadoComponent implements OnInit, OnChanges
         this.onReportSelectChange("Mozos");
       break;
     }
-    // if($event.role.indexOf("bartender") == 0)
-    // {
-    //   (document.getElementById('operationsType') as HTMLSelectElement).value= "Bar";
-    // }
     this.ListOperations(this.report, this.employee);
   }
 
   onReportSelectChange($event /*option.value*/)
   {
+    this.selected = true;
     console.log("changing to", {before: this.report, after: $event});
     this.report = $event;
     this.ListOperations(this.report, this.employee);
@@ -95,23 +88,14 @@ export class OperacionesListadoComponent implements OnInit, OnChanges
 
   ListOperations(report?: string, employee?: string)
   {
+    this.showingSpinner = true;
     let that = this;
     this.comandaService.ListOperations(report, employee).subscribe({
       next: function (response) { that.operations = response; },
-      error: (err) => { console.error(err); }
+      error: (err) => { console.error(err); },
+      complete: ()=>{that.showingSpinner = false}
     });
   }
-
-
-  ListAllOperations(employee?: string)
-  {
-    let that = this;
-    this.comandaService.ListOperations(this.report, employee).subscribe({
-      next: function (response) { that.operations = response; },
-      error: (err) => { console.error(err);}
-    });
-  }
-
   PrintTable()
   {
     var data = document.getElementById('tabla');

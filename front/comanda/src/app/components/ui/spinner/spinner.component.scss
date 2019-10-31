@@ -2,13 +2,19 @@
 {
     background-repeat: no-repeat;
     background-size: 100%;
-    height: 120px;;
+    height: 120px;
 }
 .default
 {
-    background-image: url("../../../../assets/img/spinners/default.gif");
+    background: rgba(0,0,0,0.5) url("../../../../assets/img/spinners/default.gif") no-repeat center;
 }
 .pizza
 {
     background-image: url("../../../../assets/img/spinners/pizza.gif");
+}
+.default
+{
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }

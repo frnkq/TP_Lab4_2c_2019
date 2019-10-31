@@ -1,5 +1,5 @@
 <app-header [title]="Empleados"></app-header>
-<p *ngIf="showingSpinner">spinner</p>
+<app-spinner *ngIf="showingSpinner">spinner</app-spinner>
 <div class="col-12 text-right mr-0">
     <button class="btn btn-primary" (click)="Pdf()">Imprimir tabla</button>
 </div>
