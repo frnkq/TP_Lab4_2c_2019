@@ -148,6 +148,7 @@ export class CaptchaComponent implements OnInit {
   }
   DisableCaptcha()
   {
+      
       let captcha = document.getElementById('image');
       captcha.style.border = "3px solid red";
       this.NewCaptcha();
