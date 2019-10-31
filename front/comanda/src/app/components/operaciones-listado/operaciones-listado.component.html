@@ -1,12 +1,16 @@
 <button class="btn btn-primary" (click)="PrintTable()">Imprimir</button>
+
 Operaciones:
 <select name="operationsType" id="operationsType" [ngModel]="operationsFilter" (ngModelChange)="onReportSelectChange($event)">
+    <option selected hidden>Rol</option>
     <option *ngFor="let report of reports" value="{{report}}">
         {{report}}
     </option>
 </select>
+
 Empleados:
 <select name="operationsType" [ngModel]="empleadosFilter" (ngModelChange)="onEmpleadosSelectChange($event)" id="employees">
+    <option value="">Todos</option>
     <option *ngFor="let empleado of empleados" [ngValue]="empleado">
         {{empleado.username}}
     </option>

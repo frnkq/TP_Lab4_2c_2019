@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { ComandaService } from 'src/app/services/comanda.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import html2canvas from 'html2canvas';
@@ -9,7 +9,7 @@ import jsPDF from 'jspdf';
   templateUrl: './operaciones-listado.component.html',
   styleUrls: ['./operaciones-listado.component.scss']
 })
-export class OperacionesListadoComponent implements OnInit
+export class OperacionesListadoComponent implements OnInit, OnChanges
 {
 
   message: string = "";
@@ -24,8 +24,15 @@ export class OperacionesListadoComponent implements OnInit
   constructor(private comandaService: ComandaService, private jwtHelper: JwtHelperService)
   {
     this.report = "kitchen";
-    this.reports = ["kitchen", "beer", "bar", "mozos", "/empleado/username"];
+    this.reports = ["Bar", "Cocina", "Cerveza", "Mozos", "Usuario"];
     this.empleados = [];
+  }
+
+  ngOnChanges(changes: SimpleChanges)
+  {
+    //remove socios
+    if(changes.empleados)
+      this.empleados = this.empleados.filter((e)=>{ return e.role.indexOf("socio") != 0 });
   }
 
   ngOnInit()
@@ -50,19 +57,40 @@ export class OperacionesListadoComponent implements OnInit
   {
     this.employee = $event.username;
     //match operation for employee
-    if($event.role.indexOf("bartender") == 0)
+    switch($event.role)
     {
-      (document.getElementById('operationsType') as HTMLSelectElement).value= "bar";
+      case "bartender":
+        (document.getElementById('operationsType') as HTMLSelectElement).value= "Bar";
+        this.onReportSelectChange("Bar");
+      break;
+
+      case "cervecero":
+        (document.getElementById('operationsType') as HTMLSelectElement).value= "Cerveza";
+        this.onReportSelectChange("Cerveza");
+      break;
+
+      case "cocinero":
+        (document.getElementById('operationsType') as HTMLSelectElement).value= "Cocina";
+        this.onReportSelectChange("Cocina");
+      break;
+
+      case "mozo":
+        (document.getElementById('operationsType') as HTMLSelectElement).value= "Mozos";
+        this.onReportSelectChange("Mozos");
+      break;
     }
+    // if($event.role.indexOf("bartender") == 0)
+    // {
+    //   (document.getElementById('operationsType') as HTMLSelectElement).value= "Bar";
+    // }
     this.ListOperations(this.report, this.employee);
-    console.log("empelado changed", $event);
   }
 
   onReportSelectChange($event /*option.value*/)
   {
+    console.log("changing to", {before: this.report, after: $event});
     this.report = $event;
     this.ListOperations(this.report, this.employee);
-    console.log("empelado changed");
   }
 
   ListOperations(report?: string, employee?: string)
@@ -72,7 +100,6 @@ export class OperacionesListadoComponent implements OnInit
       next: function (response) { that.operations = response; },
       error: (err) => { console.error(err); }
     });
-    console.log("filter changed");
   }
 
 
@@ -81,7 +108,7 @@ export class OperacionesListadoComponent implements OnInit
     let that = this;
     this.comandaService.ListOperations(this.report, employee).subscribe({
       next: function (response) { that.operations = response; },
-      error: (err) => { console.error(err); }
+      error: (err) => { console.error(err);}
     });
   }
 

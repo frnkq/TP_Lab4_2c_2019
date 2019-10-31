@@ -19,6 +19,10 @@ export class ComandaService {
       unSuspendemployee: "admin/empleados/dessuspender",
       lists: {
         kitchen: "listados/cocina",
+        beer: "listados/cerveza",
+        bar: "listados/bar",
+        mozos: "listados/mozos",
+        user: "listados/empleado",
       }
     },
   }
@@ -105,21 +109,28 @@ export class ComandaService {
   }
 
   /* LISTADOS */
-  public ListOperations(list?: string, employee? :string)
-  {
-    console.log("listing ", {list: list, employee: employee});
+  public ListOperations(list?: string, employee?: string) {
+    console.log("listing ", { list: list, employee: employee });
     let token = this.jwtHelperService.tokenGetter();
-    switch(list)
-    {
+    switch (list) {
       case "default":
-      case "kitchen":
+      case "Cocina":
         return this.ListKitchenOperations(token, employee);
-      
+      case "Cerveza":
+        return this.ListBeerOperations(token, employee);
+      case "Bar":
+        return this.ListBarOperations(token, employee);
+      case "Mozos":
+        return this.ListMozosOperations(token, employee);
+      case "Usuario":
+        return this.ListUserOperations(token, employee);
+
     }
+    return this.ListKitchenOperations(token, employee);
   }
   private ListKitchenOperations(token: string, employee?: string) {
     let endpoint = this.host + this.endpoints.admin.lists.kitchen;
-    endpoint = employee ? endpoint+"/"+employee : endpoint;
+    endpoint = employee ? endpoint + "/" + employee : endpoint;
     let header = new HttpHeaders();
     header = header.set("Access-Control-Allow-Origin", "*");
     header = header.append("token", token);
@@ -132,8 +143,67 @@ export class ComandaService {
     );
   }
 
-  private ListBeerOperations(token: string, employee?: string)
-  {
+  private ListBeerOperations(token: string, employee?: string) {
+    let endpoint = this.host + this.endpoints.admin.lists.beer;
+    endpoint = employee ? endpoint + "/" + employee : endpoint;
+    let header = new HttpHeaders();
+    header = header.set("Access-Control-Allow-Origin", "*");
+    header = header.append("token", token);
+    return this.http.get(
+      endpoint,
+      {
+        headers: header,
+        responseType: "json"
+      }
+    );
+  }
 
+  private ListBarOperations(token: string, employee?: string) {
+    let endpoint = this.host + this.endpoints.admin.lists.bar;
+    endpoint = employee ? endpoint + "/" + employee : endpoint;
+    let header = new HttpHeaders();
+    header = header.set("Access-Control-Allow-Origin", "*");
+    header = header.append("token", token);
+    return this.http.get(
+      endpoint,
+      {
+        headers: header,
+        responseType: "json"
+      }
+    );
+  }
+
+  private ListMozosOperations(token: string, employee?: string) {
+    let endpoint = this.host + this.endpoints.admin.lists.mozos;
+    endpoint = employee ? endpoint + "/" + employee : endpoint;
+    let header = new HttpHeaders();
+    header = header.set("Access-Control-Allow-Origin", "*");
+    header = header.append("token", token);
+    return this.http.get(
+      endpoint,
+      {
+        headers: header,
+        responseType: "json"
+      }
+    );
+  }
+
+  private ListUserOperations(token: string, employee?: string) {
+    if (!employee)
+      return this.ListOperations();
+
+
+    let endpoint = this.host + this.endpoints.admin.lists.mozos;
+    endpoint = employee ? endpoint + "/" + employee : endpoint;
+    let header = new HttpHeaders();
+    header = header.set("Access-Control-Allow-Origin", "*");
+    header = header.append("token", token);
+    return this.http.get(
+      endpoint,
+      {
+        headers: header,
+        responseType: "json"
+      }
+    );
   }
 }
