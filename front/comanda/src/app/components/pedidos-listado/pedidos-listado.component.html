@@ -1,0 +1,19 @@
+<p>pedidos-listado works!</p>
+<button class="btn btn-primary" (click)="Run()">Run</button>
+
+<p-table [value]="pedidos">
+    <ng-template pTemplate="header">
+        <tr>
+            <th *ngFor="let col of cols">
+                <a >{{col.header}}</a>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pedido>
+        <tr>
+            <td *ngFor="let col of cols">
+                {{pedido[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

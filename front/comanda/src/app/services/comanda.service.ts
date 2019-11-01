@@ -23,8 +23,9 @@ export class ComandaService {
         bar: "listados/bar",
         mozos: "listados/mozos",
         user: "listados/empleado",
-      }
+      },
     },
+    orders: "pedidos"
   }
   constructor(private http: HttpClient, private jwtHelperService: JwtHelperService) { }
   /**AUTH */
@@ -107,6 +108,23 @@ export class ComandaService {
       }
     );
   }
+
+  /* PEDIDOS */
+  public ListOrders() {
+    let token = this.jwtHelperService.tokenGetter();
+    let endpoint = this.host + this.endpoints.orders;
+    let header = new HttpHeaders();
+    header = header.set("Access-Control-Allow-Origin", "*");
+    header = header.append("token", token);
+    return this.http.get(
+      endpoint,
+      {
+        headers: header,
+        responseType: "json"
+      }
+    );
+  }
+
 
   /* LISTADOS */
   public ListOperations(list?: string, employee?: string) {

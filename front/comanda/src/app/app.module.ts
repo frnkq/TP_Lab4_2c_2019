@@ -23,6 +23,8 @@ import { TableModule } from 'primeng/table';
 import { ReportesPageComponent } from './pages/reportes-page/reportes-page.component';
 import { QuickloginComponent } from './components/ui/quicklogin/quicklogin.component';
 import { OperacionesListadoComponent } from './components/operaciones-listado/operaciones-listado.component';
+import { PedidosPageComponent } from './pages/pedidos-page/pedidos-page.component';
+import { PedidosListadoComponent } from './components/pedidos-listado/pedidos-listado.component';
 export function tokenGetter()
 {
   return localStorage.getItem("bearer");
@@ -45,6 +47,8 @@ export function tokenGetter()
     ReportesPageComponent,
     QuickloginComponent,
     OperacionesListadoComponent,
+    PedidosPageComponent,
+    PedidosListadoComponent,
   ],
   imports: [
     BrowserModule,

@@ -7,6 +7,8 @@ import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { EmpleadosPageComponent } from './pages/empleados-page/empleados-page.component';
 import { SocioGuard } from './guards/socio.guard';
 import { ReportesPageComponent } from './pages/reportes-page/reportes-page.component';
+import { EmpleadoGuard } from './guards/empleado.guard';
+import { PedidosPageComponent } from './pages/pedidos-page/pedidos-page.component';
 
 
 const routes: Routes = [
@@ -24,6 +26,11 @@ const routes: Routes = [
       { path: 'empleados', component: EmpleadosPageComponent },
       { path: 'reportes', component: ReportesPageComponent }
     ]
+  },
+  {
+    path: 'pedidos',
+    canActivate: [EmpleadoGuard],
+    component: PedidosPageComponent
   }
 
 ];
