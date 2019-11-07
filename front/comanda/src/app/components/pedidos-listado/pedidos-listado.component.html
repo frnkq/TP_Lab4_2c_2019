@@ -1,19 +1,52 @@
-<p>pedidos-listado works!</p>
-<button class="btn btn-primary" (click)="Run()">Run</button>
-
-<p-table [value]="pedidos">
+<p-table [value]="pedidos" [rows]="10" [paginator]="true">
     <ng-template pTemplate="header">
         <tr>
             <th *ngFor="let col of cols">
-                <a >{{col.header}}</a>
+                <a>{{col.header}}</a>
             </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-pedido>
         <tr>
-            <td *ngFor="let col of cols">
-                {{pedido[col.field]}}
+            <td *ngFor="let col of cols" class="{{col.field}}">
+                <span *ngIf="col.field === 'pedidosCocinaIds'">
+                    <div class="row">
+                    <a class="bg-primary text-white p-1 m-2 col text-center" *ngFor="let pedidoCocina of pedido.arrayPedidosCocinaLinks"
+                        (click)="Click('cocina', pedidoCocina.id)">
+                        {{pedidoCocina.id}}
+                    </a>
+                    </div>
+                </span>
+                
+                <span *ngIf="col.field === 'pedidosBarIds'">
+                    <div class="row">
+                    <a class="bg-primary text-white p-1 m-2 col text-center" *ngFor="let pedidoBar of pedido.arrayPedidosBarLinks"
+                        (click)="Click('bar', pedidoBar.id)">
+                        {{pedidoBar.id}}
+                    </a>
+                    </div>
+                </span>
+
+                <span *ngIf="col.field === 'pedidosCervezaIds'">
+                    <div class="row">
+                    <a class="bg-primary text-white p-1 m-2 col text-center" *ngFor="let pedidoCerveza of pedido.arrayPedidosCervezaLinks"
+                        (click)="Click('cerveza', pedidoCerveza.id)">
+                        {{pedidoCerveza.id}}
+                    </a>
+                    </div>
+                </span>
+
+                <span *ngIf="col.field !== 'pedidosCocinaIds' && col.field !== 'pedidosBarIds' && col.field !== 'pedidosCervezaIds'">
+                    {{pedido[col.field]}}
+                </span>
             </td>
         </tr>
     </ng-template>
 </p-table>
+
+<p *ngIf="clickedPedido">
+    {{clickedPedido.estado}}<br>
+    cantidad: {{clickedPedido.cantidad}}<br>
+    producto {{clickedPedido.productoId}}
+    if inpreparacion change color on table
+</p>

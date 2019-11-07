@@ -125,6 +125,23 @@ export class ComandaService {
     );
   }
 
+  public ListOrder(type: string, id: string)
+  {
+    let token = this.jwtHelperService.tokenGetter();
+    let endpoint = this.host + "pedidos/"+type+"/"+id;
+    let header = new HttpHeaders();
+    header = header.set("Access-Control-Allow-Origin", "*");
+    header = header.append("token", token);
+    return this.http.get(
+      endpoint,
+      {
+        headers: header,
+        responseType: "json"
+      }
+    );
+    
+  }
+
 
   /* LISTADOS */
   public ListOperations(list?: string, employee?: string) {
@@ -224,4 +241,5 @@ export class ComandaService {
       }
     );
   }
+
 }
