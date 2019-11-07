@@ -69,10 +69,14 @@ export class PedidosListadoComponent implements OnInit
         element.arrayPedidosCocinaLinks = [];
         element.arrayPedidosCocina.forEach(pedidoCocina =>
         {
-          let pedido;
-          this.comandaService.ListOrder("cocina", pedidoCocina).subscribe({
-            next(response) { pedido = response; element.arrayPedidosCocinaLinks.push(pedido); }
-          });
+          if (pedidoCocina)
+          {
+
+            let pedido;
+            this.comandaService.ListOrder("cocina", pedidoCocina).subscribe({
+              next(response) { pedido = response; element.arrayPedidosCocinaLinks.push(pedido); }
+            });
+          }
         });
       }
 
@@ -86,10 +90,14 @@ export class PedidosListadoComponent implements OnInit
         element.arrayPedidosBarLinks = [];
         element.arrayPedidosBar.forEach(pedidoBar =>
         {
-          let pedido;
-          this.comandaService.ListOrder("bar", pedidoBar).subscribe({
-            next(response) { pedido = response; element.arrayPedidosBarLinks.push(pedido); }
-          });
+          if (pedidoBar)
+          {
+            let pedido;
+            this.comandaService.ListOrder("bar", pedidoBar).subscribe({
+              next(response) { pedido = response; element.arrayPedidosBarLinks.push(pedido); }
+            });
+
+          }
         });
       }
 
@@ -103,10 +111,14 @@ export class PedidosListadoComponent implements OnInit
         element.arrayPedidosCervezaLinks = [];
         element.arrayPedidosCerveza.forEach(pedidoCerveza =>
         {
-          let pedido;
-          this.comandaService.ListOrder("cerveza", pedidoCerveza).subscribe({
-            next(response) { pedido = response; element.arrayPedidosCervezaLinks.push(pedido); }
-          });
+          if (pedidoCerveza)
+          {
+            let pedido;
+            this.comandaService.ListOrder("cerveza", pedidoCerveza).subscribe({
+              next(response) { pedido = response; element.arrayPedidosCervezaLinks.push(pedido); }
+            });
+
+          }
         });
       }
 

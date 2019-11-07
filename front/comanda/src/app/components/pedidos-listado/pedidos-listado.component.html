@@ -11,32 +11,58 @@
             <td *ngFor="let col of cols" class="{{col.field}}">
                 <span *ngIf="col.field === 'pedidosCocinaIds'">
                     <div class="row">
-                    <a class="bg-primary text-white p-1 m-2 col text-center" *ngFor="let pedidoCocina of pedido.arrayPedidosCocinaLinks"
-                        (click)="Click('cocina', pedidoCocina.id)">
-                        {{pedidoCocina.id}}
-                    </a>
+                        <a *ngFor="let pedidoCocina of pedido.arrayPedidosCocinaLinks" [ngClass]="{
+                            'bg-primary': pedidoCocina.estado == 'Nuevo', 
+                            'bg-warning': pedidoCocina.estado == 'En preparacion',
+                            'bg-success': pedidoCocina.estado == 'Entregado a la mesa',
+                            'text-white p-1 m-2 col text-center':true
+                        }" (click)="Click('cocina', pedidoCocina.id)">
+                            {{pedidoCocina.id}}
+                        </a>
                     </div>
                 </span>
-                
+
                 <span *ngIf="col.field === 'pedidosBarIds'">
                     <div class="row">
-                    <a class="bg-primary text-white p-1 m-2 col text-center" *ngFor="let pedidoBar of pedido.arrayPedidosBarLinks"
-                        (click)="Click('bar', pedidoBar.id)">
-                        {{pedidoBar.id}}
-                    </a>
+                        <a *ngFor="let pedidoBar of pedido.arrayPedidosBarLinks" [ngClass]="{
+                            'bg-primary': pedidoBar.estado == 'Nuevo', 
+                            'bg-warning': pedidoBar.estado == 'En preparacion',
+                            'bg-success': pedidoBar.estado == 'Entregado a la mesa',
+                            'text-white p-1 m-2 col text-center':true
+                        }" (click)="Click('bar', pedidoBar.id)">
+                            {{pedidoBar.id}}
+                        </a>
                     </div>
                 </span>
 
                 <span *ngIf="col.field === 'pedidosCervezaIds'">
                     <div class="row">
-                    <a class="bg-primary text-white p-1 m-2 col text-center" *ngFor="let pedidoCerveza of pedido.arrayPedidosCervezaLinks"
-                        (click)="Click('cerveza', pedidoCerveza.id)">
-                        {{pedidoCerveza.id}}
-                    </a>
+                        <a *ngFor="let pedidoCerveza of pedido.arrayPedidosCervezaLinks" [ngClass]="{
+                            'bg-primary': pedidoCerveza.estado == 'Nuevo', 
+                            'bg-warning': pedidoCerveza.estado == 'En preparacion',
+                            'bg-success': pedidoCerveza.estado == 'Entregado a la mesa',
+                            'text-white p-1 m-2 col text-center':true
+                        }" (click)="Click('cerveza', pedidoCerveza.id)">
+                            {{pedidoCerveza.id}}
+                        </a>
                     </div>
                 </span>
 
-                <span *ngIf="col.field !== 'pedidosCocinaIds' && col.field !== 'pedidosBarIds' && col.field !== 'pedidosCervezaIds'">
+                <span *ngIf="col.field === 'estado'">
+                        <p
+                        [ngClass]="{
+                            'bg-primary': pedido[col.field] == 'Nuevo', 
+                            'bg-warning': pedido[col.field] == 'En preparacion',
+                            'bg-success': pedido[col.field] == 'Cerrado',
+                            'text-white p-1 m-2 col text-center':true
+                        }"
+                        >
+                            {{pedido[col.field]}}
+                        </p>
+                </span>
+
+                <span
+                    *ngIf="col.field !== 'pedidosCocinaIds' && col.field !== 'pedidosBarIds' && col.field !== 'pedidosCervezaIds' && col.field !== 'estado'">
                     {{pedido[col.field]}}
                 </span>
             </td>
@@ -48,5 +74,6 @@
     {{clickedPedido.estado}}<br>
     cantidad: {{clickedPedido.cantidad}}<br>
     producto {{clickedPedido.productoId}}
-    if inpreparacion change color on table
+    <br>
+    cocineroUsername // cerveceroUsername // bartenderUsername == null ? unassigned : cocinero/cervecero/bartender username
 </p>
