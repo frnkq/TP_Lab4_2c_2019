@@ -2,6 +2,7 @@ import { Component, OnInit, Input, EventEmitter, OnChanges } from '@angular/core
 import { ComandaService } from 'src/app/services/comanda.service';
 import { Router } from '@angular/router';
 import { ɵELEMENT_PROBE_PROVIDERS } from '@angular/platform-browser';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-pedidos-listado',
@@ -15,24 +16,40 @@ export class PedidosListadoComponent implements OnInit
   pedidos: any;
   clickedPedido: any;
   onClickedPedido: EventEmitter<any> = new EventEmitter<any>();
-  constructor(private comandaService: ComandaService, private router: Router)
+  constructor(private comandaService: ComandaService, private router: Router, private jwtHelperService: JwtHelperService)
   {
     this.pedidos = [];
   }
 
   ngOnInit()
   {
-    this.cols = [
-      { field: 'id', header: "#" },
-      { field: 'mesaId', header: "Mesa" },
-      { field: 'mozoUsername', header: "Mozo" },
-      { field: 'clienteUsername', header: "Cliente" },
-      { field: 'pedidosBarIds', header: "Pedidos Bar" },
-      { field: 'pedidosCervezaIds', header: "Pedidos Cerveza" },
-      { field: 'pedidosCocinaIds', header: "Pedidos Cocina" },
-      { field: 'hora', header: "Hora" },
-      { field: 'estado', header: "Estado" },
-    ];
+    switch (this.jwtHelperService.decodeToken(this.jwtHelperService.tokenGetter()).role)
+    {
+      case "socio":
+        this.cols = [
+          { field: 'id', header: "#" },
+          { field: 'mesaId', header: "Mesa" },
+          { field: 'mozoUsername', header: "Mozo" },
+          { field: 'clienteUsername', header: "Cliente" },
+          { field: 'pedidosBarIds', header: "Pedidos Bar" },
+          { field: 'pedidosCervezaIds', header: "Pedidos Cerveza" },
+          { field: 'pedidosCocinaIds', header: "Pedidos Cocina" },
+          { field: 'hora', header: "Hora" },
+          { field: 'estado', header: "Estado" },
+        ];
+      break;
+      case 'cocinero':
+      default:
+        this.cols = [
+          { field: 'id', header: "#" },
+          { field: 'pedidoId', header: "Pedido" },
+          { field: 'productoId', header: "Producto" },
+          { field: 'cantidad', header: "Cantidad" },
+          { field: 'cocineroUsername', header: "Asignado a" },
+          {field: 'estado', header: "Estado"}
+        ]
+
+    }
 
     let that = this;
     this.comandaService.ListOrders().subscribe({
