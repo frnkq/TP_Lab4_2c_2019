@@ -45,13 +45,9 @@ export class PedidosListadoComponent implements OnInit
 
   }
 
-  Click(type: string, id: string)
+  Click(pedido: any)
   {
-    let that = this;
-    this.comandaService.ListOrder(type, id).subscribe({
-      next: function (response) { that.clickedPedido = response; that.onClickedPedido.emit(response); console.log(response); },
-      error: (err) => { console.error(err) }
-    })
+    this.clickedPedido = pedido;
   }
 
   PostProcessTable()

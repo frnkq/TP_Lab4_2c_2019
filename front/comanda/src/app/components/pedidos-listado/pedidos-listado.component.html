@@ -16,7 +16,7 @@
                             'bg-warning': pedidoCocina.estado == 'En preparacion',
                             'bg-success': pedidoCocina.estado == 'Entregado a la mesa',
                             'text-white p-1 m-2 col text-center':true
-                        }" (click)="Click('cocina', pedidoCocina.id)">
+                        }" (click)="Click(pedidoCocina)">
                             {{pedidoCocina.id}}
                         </a>
                     </div>
@@ -29,7 +29,7 @@
                             'bg-warning': pedidoBar.estado == 'En preparacion',
                             'bg-success': pedidoBar.estado == 'Entregado a la mesa',
                             'text-white p-1 m-2 col text-center':true
-                        }" (click)="Click('bar', pedidoBar.id)">
+                        }" (click)="Click(pedidoBar)">
                             {{pedidoBar.id}}
                         </a>
                     </div>
@@ -42,7 +42,7 @@
                             'bg-warning': pedidoCerveza.estado == 'En preparacion',
                             'bg-success': pedidoCerveza.estado == 'Entregado a la mesa',
                             'text-white p-1 m-2 col text-center':true
-                        }" (click)="Click('cerveza', pedidoCerveza.id)">
+                        }" (click)="Click(pedidoCerveza)">
                             {{pedidoCerveza.id}}
                         </a>
                     </div>
