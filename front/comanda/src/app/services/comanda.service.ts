@@ -26,6 +26,8 @@ export class ComandaService {
         user: "listados/empleado",
       },
     },
+    pedidos: "pedidos/",
+    products: "productos",
     orders: "pedidos"
   }
   constructor(private http: HttpClient, private jwtHelperService: JwtHelperService) { }
@@ -126,10 +128,9 @@ export class ComandaService {
     );
   }
 
-  public ListOrder(type: string, id: string)
-  {
+  public ListOrder(type: string, id: string) {
     let token = this.jwtHelperService.tokenGetter();
-    let endpoint = this.host + "pedidos/"+type+"/"+id;
+    let endpoint = this.host + this.endpoints.pedidos + type + "/" + id;
     let header = new HttpHeaders();
     header = header.set("Access-Control-Allow-Origin", "*");
     header = header.append("token", token);
@@ -140,13 +141,45 @@ export class ComandaService {
         responseType: "json"
       }
     );
-    
   }
 
+  public UpdateOrder(id: string) {
+    let token = this.jwtHelperService.tokenGetter();
+    let endpoint = this.host + this.endpoints.pedidos + id;
+    let header = new HttpHeaders();
+    header = header.set("Access-Control-Allow-Origin", "*");
+    header = header.append("token", token);
+    return this.http.post(
+      endpoint,
+      {},
+      {
+        headers: header,
+        responseType: "json"
+      }
+    );
+
+  }
+
+  /* PRODUCTOS */
+
+  public GetProductos()
+  {
+    let token = this.jwtHelperService.tokenGetter();
+    let endpoint = this.host + this.endpoints.products;
+    let header = new HttpHeaders();
+    header = header.set("Access-Control-Allow-Origin", "*");
+    header = header.append("token", token);
+    return this.http.get(
+      endpoint,
+      {
+        headers: header,
+        responseType: "json"
+      }
+    );
+  }
 
   /* LISTADOS */
   public ListOperations(list?: string, employee?: string) {
-    console.log("listing ", { list: list, employee: employee });
     let token = this.jwtHelperService.tokenGetter();
     switch (list) {
       case "default":

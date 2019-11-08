@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { ComandaService } from 'src/app/services/comanda.service';
 
 @Component({
   selector: 'app-home-page',
@@ -10,7 +11,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 export class HomePageComponent implements OnInit {
   user = null;
   jwtHelper: JwtHelperService = new JwtHelperService();
-  constructor(private localStorageService: LocalStorageService) { }
+  constructor(private localStorageService: LocalStorageService, private comandaService: ComandaService) { }
 
   ngOnInit() {
     this.user = (this.localStorageService.GetToken() != null) ? this.jwtHelper.decodeToken(this.localStorageService.GetToken()).data : null;
@@ -27,5 +28,12 @@ export class HomePageComponent implements OnInit {
     //TODO why am i alerting the token out? 
     this.user = null;
     alert("bye bye "+$event);
+  }
+
+  Productos()
+  {
+    this.comandaService.GetProductos().subscribe({
+      next: (res)=>{console.log("getting prods", res);}
+    })
   }
 }

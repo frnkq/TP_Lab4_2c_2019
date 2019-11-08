@@ -4,6 +4,9 @@
             <th *ngFor="let col of cols">
                 <a>{{col.header}}</a>
             </th>
+            <th *ngIf="role === 'cocinero'">
+                Actualizar pedido
+            </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-pedido>
@@ -14,6 +17,7 @@
                         <a *ngFor="let pedidoCocina of pedido.arrayPedidosCocinaLinks" [ngClass]="{
                             'bg-primary': pedidoCocina.estado == 'Nuevo', 
                             'bg-warning': pedidoCocina.estado == 'En preparacion',
+                            'bg-warning': pedidoCocina.estado == 'En preparacion' || pedido[col.field]=='Sirviendo productos' || pedido[col.field]=='Listo para servir',
                             'bg-success': pedidoCocina.estado == 'Entregado a la mesa',
                             'text-white p-1 m-2 col text-center':true
                         }" (click)="Click(pedidoCocina)">
@@ -26,7 +30,7 @@
                     <div class="row">
                         <a *ngFor="let pedidoBar of pedido.arrayPedidosBarLinks" [ngClass]="{
                             'bg-primary': pedidoBar.estado == 'Nuevo', 
-                            'bg-warning': pedidoBar.estado == 'En preparacion',
+                            'bg-warning': pedidoBar.estado == 'En preparacion' || pedido[col.field]=='Sirviendo productos' || pedido[col.field]=='Listo para servir',
                             'bg-success': pedidoBar.estado == 'Entregado a la mesa',
                             'text-white p-1 m-2 col text-center':true
                         }" (click)="Click(pedidoBar)">
@@ -39,7 +43,7 @@
                     <div class="row">
                         <a *ngFor="let pedidoCerveza of pedido.arrayPedidosCervezaLinks" [ngClass]="{
                             'bg-primary': pedidoCerveza.estado == 'Nuevo', 
-                            'bg-warning': pedidoCerveza.estado == 'En preparacion',
+                            'bg-warning': pedidoCerveza.estado == 'En preparacion' || pedido[col.field]=='Sirviendo productos' || pedido[col.field]=='Listo para servir',
                             'bg-success': pedidoCerveza.estado == 'Entregado a la mesa',
                             'text-white p-1 m-2 col text-center':true
                         }" (click)="Click(pedidoCerveza)">
@@ -52,9 +56,8 @@
                         <p
                         [ngClass]="{
                             'bg-primary': pedido[col.field] == 'Nuevo', 
-                            'bg-warning': pedido[col.field] == 'En preparacion',
-                            'bg-success': pedido[col.field] == 'Cerrado',
-                            'bg-success': pedido[col.field] == 'Entregado a la mesa',
+                            'bg-warning': pedido[col.field] == 'En preparacion' || pedido[col.field]=='Sirviendo productos' || pedido[col.field]=='Listo para servir',
+                            'bg-success': pedido[col.field] == 'Cerrado' || pedido[col.field]=='Entregado a la mesa',
                             'text-white p-1 m-2 col text-center':true
                         }"
                         >
@@ -66,6 +69,9 @@
                     *ngIf="col.field !== 'pedidosCocinaIds' && col.field !== 'pedidosBarIds' && col.field !== 'pedidosCervezaIds' && col.field !== 'estado'">
                     {{pedido[col.field]}}
                 </span>
+            </td>
+            <td *ngIf="role === 'cocinero'">
+                <button class="btn btn-primary" (click)="ActualizarPedido(pedido)">Actualizar pedido</button>
             </td>
         </tr>
     </ng-template>

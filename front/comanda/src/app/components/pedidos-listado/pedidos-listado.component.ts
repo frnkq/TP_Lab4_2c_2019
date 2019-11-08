@@ -12,6 +12,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class PedidosListadoComponent implements OnInit
 {
 
+  @Input() token;
+  role;
   cols: any[];
   pedidos: any;
   clickedPedido: any;
@@ -23,7 +25,8 @@ export class PedidosListadoComponent implements OnInit
 
   ngOnInit()
   {
-    switch (this.jwtHelperService.decodeToken(this.jwtHelperService.tokenGetter()).role)
+    this.role = this.jwtHelperService.decodeToken(this.token).data.role;
+    switch (this.jwtHelperService.decodeToken(this.token).data.role)
     {
       case "socio":
         this.cols = [
@@ -35,11 +38,10 @@ export class PedidosListadoComponent implements OnInit
           { field: 'pedidosCervezaIds', header: "Pedidos Cerveza" },
           { field: 'pedidosCocinaIds', header: "Pedidos Cocina" },
           { field: 'hora', header: "Hora" },
-          { field: 'estado', header: "Estado" },
+          { field: 'estado', header: "Estado" }
         ];
       break;
       case 'cocinero':
-      default:
         this.cols = [
           { field: 'id', header: "#" },
           { field: 'pedidoId', header: "Pedido" },
@@ -47,8 +49,8 @@ export class PedidosListadoComponent implements OnInit
           { field: 'cantidad', header: "Cantidad" },
           { field: 'cocineroUsername', header: "Asignado a" },
           {field: 'estado', header: "Estado"}
-        ]
-
+        ];
+        break;
     }
 
     let that = this;
@@ -59,7 +61,6 @@ export class PedidosListadoComponent implements OnInit
         that.PostProcessTable();
       }
     });
-
   }
 
   Click(pedido: any)
@@ -67,6 +68,30 @@ export class PedidosListadoComponent implements OnInit
     this.clickedPedido = pedido;
   }
 
+  ActualizarPedido(pedido: any)
+  {
+    console.log("actualizando pedido", {role: this.role, pedido: pedido});
+    let that = this;
+    this.comandaService.UpdateOrder(pedido.id).subscribe({
+      next: (res)=>{console.log("response from updating pedido", res);},
+      complete: ()=>{
+        that.GetOrders();
+      }
+    });
+  }
+
+  GetOrders()
+  {
+
+    let that = this;
+    this.comandaService.ListOrders().subscribe({
+      next: function (pedidos) { that.pedidos = pedidos; console.log("got pedidos", pedidos); },
+      complete: () =>
+      {
+        that.PostProcessTable();
+      }
+    });
+  }
   PostProcessTable()
   {
 
